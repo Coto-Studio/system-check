@@ -18,4 +18,4 @@
   service:
     name: "{{ item }}"
     state: started
-  loop: "{{ active_services }}"
+  loop: "{{ system_services }}"
