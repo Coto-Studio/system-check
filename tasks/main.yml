@@ -1,2 +1,21 @@
 ---
 # tasks file for system-check
+- name: Check for reboot-required file
+  become: true
+  file:
+    path: /var/run/reboot-required
+    state: absent
+  register: reboot_required
+
+- name: Reboot server if needed
+  become: true
+  changed_when: false
+  when: reboot_required.changed
+  reboot:
+
+- name: "Ensure services are running"
+  become: true
+  service:
+    name: "{{ item }}"
+    state: started
+  loop: "{{ active_services }}"
