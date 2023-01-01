@@ -1,0 +1,28 @@
+---
+- hosts: all
+  remote_user: vagrant
+  become: true
+
+  vars:
+    system_services:
+      - nginx
+
+  pre_tasks:
+    - name: Install nginx
+      package:
+        update_cache: true
+        name: nginx
+        state: present
+
+    - name: Make sure serviec is started
+      service:
+        name: nginx
+        state: started
+
+    - name: Create reboot file
+      file:
+        path: /var/run/reboot-required
+        state: touch
+
+  roles:
+    - ../../
