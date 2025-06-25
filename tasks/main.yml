@@ -16,6 +16,6 @@
 - name: "Ensure services are running"
   become: true
   service:
-    name: "{{ item }}"
-    state: started
+    name: "{{ item.name | default(item) }}"
+    state: "{{ item.state | default('started') }}"
   loop: "{{ system_services }}"
